@@ -2,10 +2,9 @@ package com.example.androidthings.myproject;
 
 import android.util.Log;
 
-import java.io.IOException;
-
 import com.google.android.things.contrib.driver.mma8451q.Mma8451Q;
 
+import java.io.IOException;
 
 
 /**
@@ -25,7 +24,7 @@ import com.google.android.things.contrib.driver.mma8451q.Mma8451Q;
  *   Middle of voltage divider to Analog A0..A3 on IDD Hat
  */
 
-public class Hw3TemplateApp extends SimplePicoPro {
+public class Newhw3 extends SimplePicoPro {
 
     Mma8451Q accelerometer;
 
@@ -34,7 +33,9 @@ public class Hw3TemplateApp extends SimplePicoPro {
 
     float f0,f1,f0_min,f0_max,f1_min,f1_max;
     boolean flag;
-    float flex0,flex0_min,flex0_max;
+    float flex,flex_min,flex_max;
+    float x,y;//calculated
+    float flex0;//calculated
     public void setup() {
 
         // Initialize the serial port for communicating to a PC
@@ -46,8 +47,8 @@ public class Hw3TemplateApp extends SimplePicoPro {
         f0_max = 3.4f;
         f1_min = .0f;
         f1_max = 3.4f;
-        flex0_min = 1.1f;
-        flex0_max = 2.25f;
+        flex_min = 1.0f;
+        flex_max = 2.2f;
         // Initialize the Analog-to-Digital converter on the HAT
         analogInit(); //need to call this first before calling analogRead()
 
@@ -69,6 +70,10 @@ public class Hw3TemplateApp extends SimplePicoPro {
         return (f1-f1_min)/(f1_max-f1_min);
     }
 
+    public float getFlex0(){
+        return (flex-flex_min)/(flex_max-flex_min);
+    }
+
 
     public void loop() {
         // read all analog channels and print to UART
@@ -84,55 +89,58 @@ public class Hw3TemplateApp extends SimplePicoPro {
         f1=analogRead(A1);
 
         //flex sensor part
-        flex0=analogRead(A2);
+        flex=analogRead(A2);
 
-        float x = getX();
-        float y = getY();
+
+        x = getX();
+        y = getY();
+
+        flex0=getFlex0();
 
         if(x<.4f && y <.4f ){
             //printCharacterToScreen('e');
-            println("topleft");
+            //println("topleft");
             //topLeftHit();
             flag = true;
         }
         if(x>.4 && x<.6 && y<.4){
             //printCharacterToScreen('e');
-            println("top");
+           // println("top");
             //topLeftHit();
             flag = true;
         }
         if(x>.6f && y <.4f ){
-            println("topright");
+            //println("topright");
             //topRightHit();
             flag = true;
         }
         if(x<.4f && y >.4f&&y<.6f ){
-            println("left");
+            //println("left");
             //bottomLeftHit();
             flag = true;
         }
         if(x>.6f && y >.4f&&y<.6f ){
-            println("right");
+            //println("right");
             //bottomLeftHit();
             flag = true;
         }
         if(x<.4f && y >.6f ){
-            println("bottomleft");
+            //println("bottomleft");
             //bottomLeftHit();
             flag = true;
         }
         if(x>.6f && y >.6f ){
-            println("bottomright");
+            //println("bottomright");
             //bottomRightHit();
             flag = true;
         }
         if(x>.4 && x<.6 && y>.6 ){
-            println("bottomhit");
+            //println("bottomhit");
             //bottomHit();
             flag = true;
         }
         if(x>.4 && x<.6 && y>.4 && y<.6){
-            println("zero");
+           // println("zero");
 
             flag = false;
         }
@@ -152,8 +160,8 @@ public class Hw3TemplateApp extends SimplePicoPro {
         } catch (IOException e) {
             Log.e("HW3Template","loop",e);
         }
-        println("A0: "+f0+"   A1: "+f1+" X: "+xyz[0]+"   Y: "+xyz[1]+"   Z: "+xyz[2]+" Flex: "+flex0);
-        println(UART6,f0+" "+f1+" "+xyz[0]+" "+xyz[1]+" "+xyz[2]+" "+flex0);
-        delay(5);
+        //println("A0: "+x+"   A1: "+y+" X: "+xyz[0]+"   Y: "+xyz[1]+"   Z: "+xyz[2]+" Flex: "+flex0);
+        println(UART6,x+" "+y+" "+xyz[0]+" "+xyz[1]+" "+xyz[2]+" "+flex0);
+        delay(300);
     }
 }
