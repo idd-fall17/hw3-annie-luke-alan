@@ -161,7 +161,7 @@ public class Newhw3 extends SimplePicoPro {
             Log.e("HW3Template","loop",e);
         }
         //println("A0: "+x+"   A1: "+y+" X: "+xyz[0]+"   Y: "+xyz[1]+"   Z: "+xyz[2]+" Flex: "+flex0);
-        println(UART6,x+" "+y+" "+xyz[0]+" "+xyz[1]+" "+xyz[2]+" "+flex0);
-        delay(300);
+        println(UART6,f0+" "+f1+" "+xyz[0]+" "+xyz[1]+" "+xyz[2]+" "+flex0);
+        delay(100);
     }
 }
